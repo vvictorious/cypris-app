@@ -15,7 +15,7 @@ const Search = ({ input, setInput, fetchData }) => {
           id="search-input"
           name="search input"
           className="search-input"
-          placeholder="Enter your search term..."
+          placeholder="Find people, projects and more"
         />
         <button
           onClick={handleSearchClick}
