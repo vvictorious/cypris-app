@@ -49,7 +49,8 @@ function App() {
 
   return (
     <div className="App">
-      <Search input={input} setInput={setInput} fetchData={fetchData} />
+      <h1 className='title'>Find Scholarly Papers</h1>
+      <Search input={input} setInput={setInput} fetchData={fetchData} />      
     </div>
   );
 }

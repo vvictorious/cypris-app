@@ -5,6 +5,12 @@ const Search = ({ input, setInput, fetchData }) => {
     e.preventDefault();
     fetchData();
   };
+
+  const handleSecondaryInputChange = (e) => {
+    // Implement any logic for handling changes in the secondary input
+    console.log("Secondary input value:", e.target.value);
+  };
+
   return (
     <div className="search-container">
       <form action="/search" method="GET">
@@ -15,7 +21,13 @@ const Search = ({ input, setInput, fetchData }) => {
           id="search-input"
           name="search input"
           className="search-input"
-          placeholder="Find people, projects and more"
+          placeholder="What subject are you interested in?"
+        />
+        <input
+          type="number"
+          onChange={handleSecondaryInputChange}
+          className="secondary-input"
+          placeholder="Max number of papers"
         />
         <button
           onClick={handleSearchClick}
