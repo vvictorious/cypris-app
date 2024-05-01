@@ -1,1 +1,1 @@
-To get this app started clone the app and then run an npm install at the root. After that run npm start and the app should start up!
+To get this app started clone the app, switch over to master branch. For some reeason I think main is the default. Then run an npm install at the root. After that run npm start and the app should start up!
