@@ -3,15 +3,23 @@ import "./main.scss";
 import axios from "axios";
 
 import Search from "./components/Search";
+import PapersList from "./components/PapersList";
+import Chart from "./components/Chart";
 
 function App() {
-  const [input, setInput] = useState("");
+  const [primaryInput, setprimaryInput] = useState("");
+  const [secondaryInput, setSecondaryInput] = useState("");
   const [keywordCounts, setKeywordCounts] = useState(null);
+  const [papers, setPapers] = useState(null);
 
-  console.log("keywordCounts", keywordCounts);
+  console.log(keywordCounts)
 
-  const countKeywordOccurrences = (papers, keywords) => {
+  const countKeywordOccurrences = (papers) => {
     const keywordCounts = {};
+    const words = primaryInput.trim().split(/\s+/);
+    const keywords = words.filter(
+      (word) => !["and", "or", "not"].includes(word.toLowerCase())
+    );
 
     papers.forEach((paper) => {
       keywords.forEach((keyword) => {
@@ -26,31 +34,37 @@ function App() {
   };
 
   async function fetchData() {
-    console.log("FIRED");
-    const words = input.trim().split(/\s+/);
-    const keywords = words.filter(
-      (word) => !["and", "or", "not"].includes(word.toLowerCase())
-    );
-
-    const queryString = encodeURIComponent(input);
-    console.log("queryString", queryString);
-
+    const queryString = encodeURIComponent(primaryInput);
     try {
       const response = await axios.get(
-        `https://api.core.ac.uk/v3/search/works?q=(${queryString})&limit=5`
+        `https://api.core.ac.uk/v3/search/works?q=(${queryString})${
+          secondaryInput ? `&limit=${secondaryInput}` : ""
+        }`
       );
-      console.log(response.data.results)
-      countKeywordOccurrences(response.data.results, keywords);
+      setPapers(response.data.results);
+      countKeywordOccurrences(response.data.results);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-    setInput("");
+    setprimaryInput("");
+    setSecondaryInput("");
   }
 
   return (
     <div className="App">
-      <h1 className='title'>Find Scholarly Papers</h1>
-      <Search input={input} setInput={setInput} fetchData={fetchData} />      
+      <h1 className="title">Find Scholarly Papers</h1>
+      <Search
+        primaryInput={primaryInput}
+        setprimaryInput={setprimaryInput}
+        secondaryInput={secondaryInput}
+        setSecondaryInput={setSecondaryInput}
+        fetchData={fetchData}
+      />
+
+      <div className="flex-container">
+        <PapersList papers={papers} />
+        <Chart />
+      </div>
     </div>
   );
 }
