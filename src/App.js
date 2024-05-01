@@ -4,15 +4,13 @@ import axios from "axios";
 
 import Search from "./components/Search";
 import PapersList from "./components/PapersList";
-import Chart from "./components/Chart";
+import BarChart from "./components/BarChart";
 
 function App() {
   const [primaryInput, setprimaryInput] = useState("");
   const [secondaryInput, setSecondaryInput] = useState("");
   const [keywordCounts, setKeywordCounts] = useState(null);
   const [papers, setPapers] = useState(null);
-
-  console.log(keywordCounts)
 
   const countKeywordOccurrences = (papers) => {
     const keywordCounts = {};
@@ -61,10 +59,13 @@ function App() {
         fetchData={fetchData}
       />
 
-      <div className="flex-container">
-        <PapersList papers={papers} />
-        <Chart />
-      </div>
+      {papers && (
+        <div className="flex-container">
+          <PapersList papers={papers} />
+          <BarChart keywordCounts={keywordCounts} />
+        </div>
+      )}
+      {!papers && <h3 className="no-papers-prompt">Search for some research paperss to get started (:</h3>}
     </div>
   );
 }
